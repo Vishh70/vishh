@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Drainage System (The EcoFlow Solution)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Smart Drainage System</h1>
+            <p>The EcoFlow Solution</p>
+        </div>
+    </header>
+    <main id="content">
+        <div class="grid-container">
+            <div class="block" onclick="showMap()">Map of City</div>
+            <div class="block" onclick="showFlow()">See Flow</div>
+            <div class="block" onclick="window.location.href='/aindex.html'">
+                Analysis
+            </div>
+            <div class="block" onclick="window.location.href='/admin_index.html'">
+                Admin control
+            </div>
+            
+        </div>
+        
+    </main>
+
+    <script>
+        // Drainage points data
+        const drainagePoints = [ 
+        { "lat": 18.732625, "lng": 73.663770, "name": "NMIET 1.1", "status": "Operational" },
+  { "lat": 18.732341, "lng": 73.663794, "name": "NMIET 1.2", "status": "Operational" },
+  { "lat": 18.731951, "lng": 73.663843, "name": "NMIET 1.3", "status": "Operational" },
+  { "lat": 18.731806, "lng": 73.663859, "name": "NMIET 1.4", "status": "Operational" },
+  { "lat": 18.731265, "lng": 73.663964, "name": "NMIET 1.5", "status": "Operational" },
+  { "lat": 18.730993, "lng": 73.664240, "name": "NMIET 1.6", "status": "Operational" },
+  { "lat": 18.730724, "lng": 73.664377, "name": "NMIET 1.7", "status": "Operational" },
+  { "lat": 18.730856, "lng": 73.663910, "name": "NMIET 1.8", "status": "Operational" },
+  { "lat": 18.730448, "lng": 73.664499, "name": "NMIET 1.9", "status": "Operational" },
+  { "lat": 18.730184, "lng": 73.664427, "name": "NMIET 1.10", "status": "Operational" },
+  { "lat": 18.730026, "lng": 73.664397, "name": "NMIET 1.11", "status": "Operational" },
+  { "lat": 18.729013, "lng": 73.664113, "name": "NMIET 1.12", "status": "Operational" },
+  { "lat": 18.728771, "lng": 73.664046, "name": "NMIET 1.13", "status": "Operational" },
+  { "lat": 18.728179, "lng": 73.664094, "name": "NMIET 1.14", "status": "Operational" },
+  { "lat": 18.727557, "lng": 73.664859, "name": "NMIET 1.15", "status": "Operational" },
+  { "lat": 18.726239, "lng": 73.664824, "name": "NMIET 1.16", "status": "Operational" },
+  { "lat": 18.725898, "lng": 73.664934, "name": "NMIET 1.17", "status": "Operational" },
+  { "lat": 18.725649, "lng": 73.665363, "name": "NMIET 1.18", "status": "Operational" },
+  { "lat": 18.72800294769224, "lng": 73.66759364104159, "name": "Latis Society 2.1", "status": "Operational" },
+  { "lat": 18.728684081472117, "lng": 73.66730960320146, "name": "Latis Society 2.2", "status": "Operational" },
+  { "lat": 18.728350918553208, "lng": 73.66694999566073, "name": "Latis Society 2.3", "status": "Operational" },
+  { "lat": 18.728575495111432, "lng": 73.66626726250371, "name": "Latis Society 2.4", "status": "Operational" },
+  { "lat": 18.728802250051853, "lng": 73.6664687475329, "name": "Latis Society 2.5", "status": "Operational" },
+  { "lat": 18.72911475222538, "lng": 73.66699457860365, "name": "Latis Society 2.6", "status": "Operational" },
+  { "lat": 18.72920951083477, "lng": 73.66723726986704, "name": "Latis Society 2.7", "status": "Operational" },
+  { "lat": 18.729255882049795, "lng": 73.66655390236217, "name": "Latis Society 2.8", "status": "Operational" },
+  { "lat": 18.72918531715232, "lng": 73.6661451591817, "name": "Latis Society 2.9", "status": "Operational" },
+  { "lat": 18.729227940848407, "lng": 73.66612022423958, "name": "Latis Society 2.10", "status": "Operational" },
+  { "lat": 18.729492119037904, "lng": 73.66631066107145, "name": "Latis Society 2.11", "status": "Operational" },
+  { "lat": 18.72889517735353, "lng": 73.66606121567375, "name": "Latis Society 2.12", "status": "Operational" },
+  { "lat": 18.730050060461224, "lng": 73.66705363296666, "name": "Latis Society 2.13", "status": "Operational" },
+  { "lat": 18.730098323580346, "lng": 73.66667812372073, "name": "Latis Society 2.14", "status": "Operational" },
+  { "lat": 18.73001957848416, "lng": 73.66637771632398, "name": "Latis Society 2.15", "status": "Operational" },
+  { "lat": 18.73041838391616, "lng": 73.66714751027816, "name": "Latis Society 2.16", "status": "Operational" },
+  { "lat": 18.73008054243279, "lng": 73.66616313961201, "name": "Latis Society 2.17", "status": "Operational" },
+  { "lat": 18.730222791560745, "lng": 73.66609608438951, "name": "Latis Society 2.18", "status": "Operational" },
+  { "lat": 18.73039806264301, "lng": 73.66608803776282, "name": "Latis Society 2.19", "status": "Operational" },
+  { "lat": 18.73068510039958, "lng": 73.66707509063787, "name": "Latis Society 2.20", "status": "Operational" },
+  { "lat": 18.730608895732992, "lng": 73.66547381192481, "name": "Latis Society 2.21", "status": "Operational" },
+  { "lat": 18.730159287500562, "lng": 73.66562938004098, "name": "Latis Society 2.22", "status": "Operational" },
+  { "lat": 18.73114922714385, "lng": 73.66599001453561, "name": "Latis Society 2.23", "status": "Operational" },
+  { "lat": 18.731172062672368, "lng": 73.66527467302693, "name": "Latis Society 2.24", "status": "Operational" },
+  { "lat": 18.73145750651845, "lng": 73.6663034787922, "name": "Latis Society 2.25", "status": "Operational" },
+  { "lat": 18.729417166146163, "lng": 73.6657632411124, "name": "Latis Society 2.26", "status": "Operational" },
+  { "lat": 18.729077080730654, "lng": 73.66548284712795, "name": "Latis Society 2.27", "status": "Operational" },
+  { "lat": 18.735410, "lng": 73.662144, "name": "Shahu Colony 3.0", "status": "Operational" },
+  { "lat": 18.735026, "lng": 73.662165, "name": "Shahu Colony 3.2", "status": "Operational" },
+  { "lat": 18.734366, "lng": 73.662213, "name": "Shahu Colony 3.3", "status": "Operational" },
+  { "lat": 18.735408, "lng": 73.662523, "name": "Shahu Colony 3.4", "status": "Operational" },
+  { "lat": 18.735143, "lng": 73.662706, "name": "Shahu Colony 3.5", "status": "Operational" },
+  { "lat": 18.734666, "lng": 73.662607, "name": "Shahu Colony 3.6", "status": "Operational" },
+  { "lat": 18.735192, "lng": 73.663403, "name": "Shahu Colony 3.7", "status": "Operational" },
+  { "lat": 18.734648, "lng": 73.663451, "name": "Shahu Colony 3.8", "status": "Operational" },
+  { "lat": 18.734518, "lng": 73.662639, "name": "Shahu Colony 3.9", "status": "Operational" },
+  { "lat": 18.734513, "lng": 73.663494, "name": "Shahu Colony 3.10", "status": "Operational" },
+  { "lat": 18.734001, "lng": 73.662715, "name": "Shahu Colony 3.11", "status": "Operational" },
+  { "lat": 18.733955, "lng": 73.663869, "name": "Shahu Colony 3.12", "status": "Operational" },
+  { "lat": 18.733777, "lng": 73.664013, "name": "Shahu Colony 3.13", "status": "Operational" },
+  { "lat": 18.733499, "lng": 73.663834, "name": "Shahu Colony 3.14", "status": "Operational" },
+  { "lat": 18.733354, "lng": 73.663506, "name": "Shahu Colony 3.15", "status": "Operational" },
+  { "lat": 18.733399, "lng": 73.663158, "name": "Shahu Colony 3.16", "status": "Operational" },
+  { "lat": 18.733427, "lng": 73.662673, "name": "Shahu Colony 3.17", "status": "Operational" },
+  { "lat": 18.733076, "lng": 73.662660, "name": "Shahu Colony 3.18", "status": "Operational" },
+  { "lat": 18.733140, "lng": 73.663129, "name": "Shahu Colony 3.19", "status": "Operational" },
+  { "lat": 18.732862, "lng": 73.663286, "name": "Shahu Colony 3.20", "status": "Operational" },
+  { "lat": 18.732602, "lng": 73.663410, "name": "Shahu Colony 3.21", "status": "Operational" },
+  { "lat": 18.7275743625452, "lng": 73.6666148492394, "name": "Vaibhav Apartment 4.1", "status": "Operational" },
+  { "lat": 18.72777584365373, "lng": 73.66621305524139, "name": "Vaibhav Apartment 4.2", "status": "Operational" },
+  { "lat": 18.72812873807234, "lng": 73.6661732128691, "name": "Vaibhav Apartment 4.3", "status": "Operational" },
+  { "lat": 18.72851101152415, "lng": 73.66607668886488, "name": "Vaibhav Apartment 4.4", "status": "Operational" },
+  { "lat": 18.72712595866957, "lng": 73.66521089783308, "name": "Vaibhav Apartment 4.5", "status": "Operational" },
+  { "lat": 18.727483303397808, "lng": 73.66525769735067, "name": "Vaibhav Apartment 4.6", "status": "Operational" },
+  { "lat": 18.728364196460202, "lng": 73.66530449686786, "name": "Vaibhav Apartment 4.7", "status": "Operational" },
+  { "lat": 18.72780186588525, "lng": 73.6666646078064, "name": "Vaibhav Apartment 4.8", "status": "Operational" },
+  { "lat": 18.727807406097085, "lng": 73.6658807158934, "name": "Vaibhav Apartment 4.9", "status": "Operational" },
+  { "lat": 18.728123197872012, "lng": 73.66578126691934, "name": "Vaibhav Apartment 4.10", "status": "Operational" }
+
+            // Additional data here...
+        ];
+
+        // Function to generate random speed
+        const generateRandomSpeed = () => (Math.random() * 5).toFixed(2); // Speed between 10 and 100 km/h
+
+        // Function to generate random direction
+        const getDirection = (name) => {
+            if (name.startsWith("NMIET")) {
+                return "South"; // All NMIET drains go South
+            }
+            if (name.startsWith("Latis Society")) {
+                const specificLatisSociety = name.split(" ")[2]; // Extracts 2.x part
+                if (["2.7", "2.2", "2.3", "2.6"].includes(specificLatisSociety)) {
+                    return "East"; // Specific Lattice drains go East
+                } else {
+                    return "South"; // All other Lattice drains go South
+                }
+            }
+            if (name.startsWith("Shahu Colony")) {
+                return "South"; // All Shahu Colony drains go South
+            }
+            if (name.startsWith("Vaibhav Apartment")) {
+                const specificVaibhavApartment = name.split(" ")[2]; // Extracts 4.x part
+                if (["4.9", "4.10"].includes(specificVaibhavApartment)) {
+                    return "West"; // Specific Viabhav drains go West
+                } else {
+                    return "South"; // All other Viabhav drains go South
+                }
+            }
+            return "South"; // Default direction for other drains
+        };
+
+        // Function to display the flow data as a table
+        function showFlow() {
+            let tableRows = drainagePoints.map(point => {
+                const speed = generateRandomSpeed();
+                const direction = getDirection(point.name);
+                return `
+                    <tr>
+                        <td style="color:black;">${point.name}</td>
+                        <td style="color:black;">${speed} m/s</td>
+                        <td style="color:black;">${direction}</td>
+                    </tr>
+                `;
+            }).join("");
+
+            // Insert the table into the HTML
+            document.getElementById('content').innerHTML = `
+                <h2>Flow Data</h2>
+                <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="color: black;">Name</th>
+                            <th style="color: black;">Speed (m/s)</th>
+                            <th style="color: black;">Direction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Function to show the map of the city
+        function showMap() {
+            document.getElementById('content').innerHTML = `
+                <h2>Map of City</h2>
+                <div id="map" style="height: 450px; width: 100%;"></div>
+            `;
+            initMap();
+        }
+
+        // Function to initialize the map
+        function initMap() {
+            const map = L.map('map').setView([18.735, 73.675], 14); // Center the map on Talegaon Dabhade
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            drainagePoints.forEach(point => {
+                const marker = L.marker([point.lat, point.lng]).addTo(map);
+                marker.bindPopup(`
+                    <b>${point.name}</b><br>
+                    Status: <span style="color: ${point.status === 'Operational' ? 'green' : 'red'};">${point.status}</span>
+                `);
+            });
+        }
+
+        // Placeholder function for analysis
+        function showAnalysis() {
+            document.getElementById('content').innerHTML = `
+                <h2>Analysis</h2>
+                <p>Analysis of drainage system data will be displayed here.</p>
+            `;
+            
+
+        }
+
+        // Placeholder function for admin control
+        function showAdmin() {
+            document.getElementById('content').innerHTML = `
+                <h2>Admin Control</h2>
+                <p>Administrator controls for managing drainage maintenance will be displayed here.</p>
+            `;
+        }
+
+        // Placeholder function for alerts
+       
+        
+    </script>
+</body>
+</html>

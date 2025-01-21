@@ -1,0 +1,76 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drainage Sludge Flow and Cleaning</title>
+    <link rel="stylesheet" href="astyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Drainage Sludge Flow and Cleaning Status</h2>
+    <a href="/mindex.html">Back to Home</a> 
+
+    <!-- Sludge Flow Table -->
+    <h3>Drainage Sludge Flow</h3>
+    <table id="drainage-table">
+        <thead>
+            <tr>
+                <th>Drainage Location</th>
+                <th>Sludge Flow (Litres)</th>
+            </tr>
+        </thead>
+        <tbody id="drainage-table-body">
+            <!-- Sludge data will be injected here -->
+        </tbody>
+    </table>
+
+    <!-- Area-wide Sludge Flow Summary Table -->
+    <h3>Overall Sludge Flow by Area</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Area</th>
+                <th>Total Sludge Flow (Litres)</th>
+            </tr>
+        </thead>
+        <tbody id="area-summary-table-body">
+            <!-- Area-wide summary will be injected here -->
+        </tbody>
+    </table>
+
+    <!-- Sludge Flow Graph -->
+    <div class="chart-container">
+        <canvas id="sludgeFlowChart"></canvas>
+    </div>
+
+    <!-- Blockage and Cleaning Section -->
+    <div class="section-title">Blockage and Cleaning Status</div>
+    <table id="cleaning-status-table">
+        <thead>
+            <tr>
+                <th>Drainage Location</th>
+                <th>Times Cleaned</th>
+                <th>Status (Next Clean)</th>
+            </tr>
+        </thead>
+        <tbody id="cleaning-status-body">
+            <!-- Cleaning data will be injected here -->
+        </tbody>
+    </table>
+
+    <!-- Cleaning Graph -->
+    <div class="chart-container">
+        <canvas id="cleaningChart"></canvas>
+    </div>
+</div>
+
+<script src="ascript.js"></script>
+
+
+</body>
+</html>
